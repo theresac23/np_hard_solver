@@ -1,0 +1,11 @@
+R1: 1 4 6 5
+R1 happiness: 98
+R1 stress: 7
+
+R2: 0 2 7 8
+R2 happiness: 34
+R2 stress: 27
+
+R3: 3 9
+R3 happiness: 1
+R3 stress: 10
