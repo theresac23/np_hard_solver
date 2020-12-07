@@ -24,8 +24,8 @@ def solve(G, s):
         st[i] = i
         rooms[i] = [i]
         rooms_s[i] = 0
-    sorted = sorted(G.edges(data=True),key= lambda x: x[2]['happiness'], reverse=True)
-    for edge in sorted: #change
+    sort = sorted(G.edges(data=True),key= lambda x: x[2]['happiness'], reverse=True)
+    for edge in sort: #change
         s1, s2, e = edge # output looks like (0, 9, {'happiness': 7.0, 'stress': 9.514})
         r1 = st[s1] # s1's room
         r2 = st[s2] # s2's room
@@ -85,7 +85,7 @@ def incr_hap(G, st, rooms, s1, s2):
         for st2 in r2:
             hapenis += G.get_edge_data(st1, st2)['happiness']
     return hapenis
-    
+
 # Here's an example of how to run your solver.
 
 # Usage: python3 solver.py test.in
