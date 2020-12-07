@@ -25,26 +25,35 @@ def solve(G, s):
         rooms[i] = [i]
         rooms_s[i] = 0
     sort = sorted(G.edges(data=True),key= lambda x: x[2]['happiness'], reverse=True)
-    for edge in sort: #change
+    for edge in sort: 
         s1, s2, e = edge # output looks like (0, 9, {'happiness': 7.0, 'stress': 9.514})
         r1 = st[s1] # s1's room
         r2 = st[s2] # s2's room
-        if len(rooms[st[r1]]) == 1: # if student 1 is by themself then add to s2's room
-            if room_stress(G, st, rooms, s1, s2) + rooms_s[s2] <= s/(k-1): # making sure new stress added to existing stress < thrshld
+        if len(rooms[r1]) == 1: # if student 1 is by themself then add to s2's room
+            new_stress = room_stress(G, st, rooms, s1, s2) + rooms_s[s2]
+            if new_stress <= float(s) / float(k-1): # making sure new stress added to existing stress < thrshld
+                rooms_s[r2] = new_stress
+                rooms_s[r1] = 0
                 hap = hap + incr_hap(G, st, rooms, s1, s2)
                 rooms[r1].remove(s1) # remove s1 from its own room
                 st[s1] = r2 # set s1's room to s2's room
                 rooms[r2].append(s1) # add s1 to s2's room
                 k -= 1 
-        elif len(rooms[st[s2]]) == 1: # add s2 to s1's room
-            if room_stress(G, st, rooms, s1, s2) + rooms_s[s1] <= s/(k-1):
+        elif len(rooms[r2]) == 1: # add s2 to s1's room
+            new_stress = room_stress(G, st, rooms, s1, s2) + rooms_s[s1]
+            if new_stress <= float(s) / float(k-1):
+                rooms_s[r1] = new_stress
+                rooms_s[r2] = 0
                 hap = hap + incr_hap(G, st, rooms, s1, s2)
-                rooms[r2].remove(s2) # remove s1 from its own room
-                st[s2] = r1 # set s1's room to s2's room
-                rooms[r1].append(s2) # add s1 to s2's room
+                rooms[r2].remove(s2) 
+                st[s2] = r1 
+                rooms[r1].append(s2) 
                 k -= 1 
         elif r1 != r2: # in different rooms both > 1, merge s1 into s2's room
-            if room_stress(G, st, rooms, s1, s2) + rooms_s[s1] + rooms_s[s2] <= s/(k-1):
+            new_stress = room_stress(G, st, rooms, s1, s2) + rooms_s[s1] + rooms_s[s2]
+            if new_stress <= float(s) / float(k-1):
+                rooms_s[r2] = new_stress
+                rooms_s[r1] = 0
                 hap = hap + incr_hap(G, st, rooms, s1, s2)
                 for stu in rooms[s1_r]: # move all of s1's room's students in s2's room
                     rooms[r2].append(stu)
