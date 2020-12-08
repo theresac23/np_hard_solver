@@ -24,8 +24,10 @@ def solve(G, s):
         st[i] = i
         rooms[i] = [i]
         rooms_s[i] = 0
-    sort = sorted(G.edges(data=True),key= lambda x: x[2]['happiness'], reverse=True)
+    sort = sorted(G.edges(data=True),key= lambda x: x[2]['happiness'] if x[2]['stress'] == 0 else x[2]['happiness']/(x[2]['stress']), reverse=True)
     for edge in sort: 
+        if k == 1:
+            break
         s1, s2, e = edge # output looks like (0, 9, {'happiness': 7.0, 'stress': 9.514})
         r1 = st[s1] # s1's room
         r2 = st[s2] # s2's room
